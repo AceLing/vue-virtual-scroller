@@ -1,11 +1,8 @@
 {
-  "name": "vue-virtual-scroller",
-  "description": "Smooth scrolling for any amount of data",
+  "name": "@atom525824/vue-virtual-scroller",
+  "description": "[Add cacheHeights to fix my bugs]Smooth scrolling for any amount of data",
   "version": "1.0.0",
-  "author": {
-    "name": "Atom Ling",
-    "email": "449114237@qq.com"
-  },
+  "author": "Atom Ling <449114237@qq.com>",
   "keywords": [
     "vue",
     "vuejs",
@@ -26,12 +23,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Akryum/vue-virtual-scroller.git"
+    "url": "git+https://github.com/AceLing/vue-virtual-scroller.git"
   },
   "bugs": {
-    "url": "https://github.com/Akryum/vue-virtual-scroller/issues"
+    "url": "https://github.com/AceLing/vue-virtual-scroller/issues"
   },
-  "homepage": "https://github.com/Akryum/vue-virtual-scroller#readme",
+  "homepage": "https://github.com/AceLing/vue-virtual-scroller#readme",
   "peerDependencies": {
     "vue": "^2.5.2"
   },
@@ -71,5 +68,8 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "directories": {
+    "doc": "docs"
+  }
 }

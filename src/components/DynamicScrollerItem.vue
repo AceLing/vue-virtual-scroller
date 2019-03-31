@@ -37,6 +37,25 @@ export default {
       type: String,
       default: 'div',
     },
+
+    mountedCallback: {
+      type: Function,
+      default: () => {},
+    },
+
+    updatedCallback: {
+      type: Function,
+      default: () => {},
+    },
+
+    beforeDestroyCallback: {
+      type: Function,
+      default: () => {},
+    },
+
+    index: {
+      type: [Number, String],
+    },
   },
 
   computed: {
@@ -82,12 +101,20 @@ export default {
   mounted () {
     if (this.vscrollData.active) {
       this.updateSize()
+      this.$nextTick(() => {
+        this.mountedCallback(this.item, this.index)
+      })
     }
+  },
+
+  updated () {
+    this.updatedCallback(this.item, this.index)
   },
 
   beforeDestroy () {
     this.vscrollBus.$off('vscroll:update', this.onVscrollUpdate)
     this.vscrollBus.$off('vscroll:update-size', this.onVscrollUpdateSize)
+    this.beforeDestroyCallback(this.item, this.index)
   },
 
   methods: {
@@ -142,6 +169,8 @@ export default {
           const size = this.getSize()
           if (size.height && this.height !== size.height) {
             this.$set(this.vscrollData.heights, this.id, size.height)
+            // 更新缓存元素高度
+            this.cacheHeights = Object.assign(this.cacheHeights || {}, this.vscrollData.heights)
             if (this.emitResize) this.$emit('resize', this.id)
           }
         }

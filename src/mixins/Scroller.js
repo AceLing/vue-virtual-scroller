@@ -63,6 +63,11 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    vscrollData: {
+      type: Object,
+      default: () => {},
+    },
   },
 
   computed: {
@@ -74,12 +79,15 @@ export default {
         const items = this.items
         const field = this.heightField
         const minItemHeight = this.minItemHeight
+        const cacheHeights = this.cacheHeights || {}
         let accumulator = 0
         let current
         for (let i = 0, l = items.length; i < l; i++) {
-          current = items[i][field] || minItemHeight
+          const id = items[i].id
+          current = items[i][field] || cacheHeights[id] || minItemHeight
           accumulator += current
           heights[i] = { accumulator, height: current }
+          // console.log(id + ': ' + current + ', ' + new Date().getTime())
         }
         return heights
       }
@@ -157,18 +165,41 @@ export default {
       this.listenerTarget = null
     },
 
+    getAccumulator (index) {
+      const accumulator = index > 0 ? this.heights[index - 1].accumulator : 0
+      return accumulator
+    },
+
     scrollToItem (index) {
-      let scrollTop
-      if (this.itemHeight === null) {
-        scrollTop = index > 0 ? this.heights[index - 1].accumulator : 0
-      } else {
-        scrollTop = index * this.itemHeight
+      this.$nextTick(function () {
+        let scrollTop
+        if (this.itemHeight === null) {
+          scrollTop = index > 0 ? this.heights[index - 1].accumulator : 0
+        } else {
+          scrollTop = index * this.itemHeight
+        }
+        this.scrollToPosition(scrollTop)
+      })
+    },
+
+    scrollToBottom (force = true) {
+      // isScrollBottom is a boolean prop which is true if the user is scrolled at the bottom before the new message is added
+      if (!this.$_scrollingToBottom && (force || this.isScrollBottom)) {
+        this.scrollToPosition(999999999)
+        this.$_scrollingToBottom = true
       }
-      this.scrollToPosition(scrollTop)
     },
 
     scrollToPosition (position) {
-      this.$el.scrollTop = position
+      const scroller = this.$el
+      scroller.scrollTop = position
+      requestAnimationFrame(() => {
+        scroller.scrollTop = position
+        setTimeout(() => {
+          scroller.scrollTop = position
+          this.$_scrollingToBottom = false
+        }, 50)
+      })
     },
 
     itemsLimitError () {

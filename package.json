@@ -1,8 +1,8 @@
 {
   "name": "@atom525824/vue-virtual-scroller",
   "description": "[Add cacheHeights to fix my bugs]Smooth scrolling for any amount of data",
-  "version": "1.0.2",
-  "author": "Atom Ling <449114237@qq.com>",
+  "version": "1.0.3",
+  "author": "Atom Ling <449114337@qq.com>",
   "keywords": [
     "vue",
     "vuejs",
